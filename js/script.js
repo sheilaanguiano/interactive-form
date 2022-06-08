@@ -24,16 +24,21 @@ shirtDesign.addEventListener('change', e => {
         shirtColor.disabled = false; 
 
          for(let i = 0; i < shirtColor.length; i++){
-             if(shirtColor.children[i].getAttribute('data-theme') !== 'js puns'){
+             if(shirtColor.children[i].getAttribute('data-theme') === 'js puns'){
+                shirtColor.children[i].style.display = 'inline';
+             } else {
                 shirtColor.children[i].style.display = 'none';
              }
          }
-    } else {
+    } else if(shirtDesign.options[2].selected) {
         shirtColor.disabled = false; 
 
         for(let i = 0; i < shirtColor.length; i++){
-            if(shirtColor.children[i].getAttribute('data-theme') !== 'heart js'){
+            if(shirtColor.children[i].getAttribute('data-theme') === 'heart js'){
+                shirtColor.children[i].style.display = 'inline';
+            } else {
                shirtColor.children[i].style.display = 'none';
+            }
         }
     }
-}});
+});
