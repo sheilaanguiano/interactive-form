@@ -18,27 +18,16 @@ jobTitle.addEventListener('change', e => {
 })
 
 
-
 shirtDesign.addEventListener('change', e => {
-     if(shirtDesign.options[1].selected){
-        shirtColor.disabled = false; 
+    shirtColor.disabled = false;
 
-         for(let i = 0; i < shirtColor.length; i++){
-             if(shirtColor.children[i].getAttribute('data-theme') === 'js puns'){
-                shirtColor.children[i].style.display = 'inline';
-             } else {
-                shirtColor.children[i].style.display = 'none';
-             }
-         }
-    } else if(shirtDesign.options[2].selected) {
-        shirtColor.disabled = false; 
-
-        for(let i = 0; i < shirtColor.length; i++){
-            if(shirtColor.children[i].getAttribute('data-theme') === 'heart js'){
-                shirtColor.children[i].style.display = 'inline';
-            } else {
-               shirtColor.children[i].style.display = 'none';
-            }
-        }
+    for(let i = 0; i < shirtColor.length; i++){
+        if(e.target.value !== shirtColor.children[i].getAttribute('data-theme')){
+            shirtColor.children[i].style.display = 'none';
+        } else {
+            shirtColor.children[i].style.display = 'initial'
+        } 
     }
 });
+
+
