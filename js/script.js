@@ -1,4 +1,4 @@
-//Start from Step 3
+// CONSTANTS
 const nameField = document.querySelector('#name');
 const jobTitle = document.querySelector('#title');
 const otherJob = document.querySelector('#other-job-role');
@@ -6,11 +6,19 @@ const shirtDesign = document.querySelector('#design');
 const shirtColor = document.querySelector('#color');
 const activities = document.querySelector('#activities');
 const activitiesCost = document.querySelector('#activities-cost');
-const checkboxes = document.querySelectorAll('.activities input');
+const payment = document.querySelector('#payment');
+const creditCard = document.querySelector('#credit-card');
+const paypal = document.querySelector('#paypal');
+const bitcoin = document.querySelector('#bitcoin');
+
 
 
 nameField.focus();
 otherJob.style.display = 'none';
+paypal.setAttribute('hidden', '');
+bitcoin.setAttribute('hidden', '');
+payment.children[1].setAttribute('selected','')
+
 shirtColor.disabled = true;
 
 jobTitle.addEventListener('change', e => {
@@ -39,7 +47,6 @@ shirtDesign.addEventListener('change', e => {
     ACTIVITIES EVENT LISTENER
 */ 
 let totalCost= 0;
-
 activities.addEventListener('change', e => {
     let clicked = e.target
     let eventCost = parseInt(clicked.getAttribute('data-cost'));
@@ -50,4 +57,31 @@ activities.addEventListener('change', e => {
       
 });
 
+/*
+   PAYMENT EVENT LISTENER
+*/ 
+
+// const myids = document.querySelectorAll('.payment-methods [div #=*]');
+// console.log(myids);
+
+payment.addEventListener('change', e => {
+    let option = e.target.value;
+
+    console.log(option);
+    
+    if(option === 'credit-card'){
+        paypal.setAttribute('hidden', '');
+        bitcoin.setAttribute('hidden', '');
+    } else if(option === 'paypal'){
+        console.log('I was picked')
+        creditCard.setAttribute('hidden', '')
+        paypal.style.display = 'initial';
+        bitcoin.setAttribute('hidden', '');
+    }else if (option === 'bitcoin'){
+        creditCard.setAttribute('hidden', '');
+        paypal.setAttribute('hidden', '');
+        bitcoin.style.display = 'initial';
+    }
+
+});
 
