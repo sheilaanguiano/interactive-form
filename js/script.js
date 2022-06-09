@@ -61,27 +61,21 @@ activities.addEventListener('change', e => {
    PAYMENT EVENT LISTENER
 */ 
 
-// const myids = document.querySelectorAll('.payment-methods [div #=*]');
-// console.log(myids);
+
+
+
 
 payment.addEventListener('change', e => {
     let option = e.target.value;
-
-    console.log(option);
+    let paymentOptions = [creditCard, paypal, bitcoin];
     
-    if(option === 'credit-card'){
-        paypal.setAttribute('hidden', '');
-        bitcoin.setAttribute('hidden', '');
-    } else if(option === 'paypal'){
-        console.log('I was picked')
-        creditCard.setAttribute('hidden', '')
-        paypal.style.display = 'initial';
-        bitcoin.setAttribute('hidden', '');
-    }else if (option === 'bitcoin'){
-        creditCard.setAttribute('hidden', '');
-        paypal.setAttribute('hidden', '');
-        bitcoin.style.display = 'initial';
-    }
 
+    for(let i = 0; i< paymentOptions.length; i++){   
+        if(option === paymentOptions[i].id ){
+            paymentOptions[i].hidden = false;
+        }else {
+            paymentOptions[i].hidden = true;
+        }
+    } 
 });
 
