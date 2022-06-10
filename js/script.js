@@ -17,7 +17,7 @@ const form = document.getElementsByTagName('form')[0];
 
 /* *********
      INITIAL PAGE SET UP
-******************* */
+**************************** */
 nameField.focus();
 otherJob.style.display = 'none';
 paypal.setAttribute('hidden', '');
@@ -25,8 +25,9 @@ bitcoin.setAttribute('hidden', '');
 payment.children[1].setAttribute('selected','')
 shirtColor.disabled = true;
 
-
-// JobTitle Event Listener
+/* *******
+    JOB TITLE EVENT LISTENER
+************************** */ 
 jobTitle.addEventListener('change', e => {
     if(jobTitle.options[6].selected){
         otherJob.style.display = '';
@@ -35,7 +36,9 @@ jobTitle.addEventListener('change', e => {
     }
 })
 
-// Shirt Design Event Listener
+/* *******
+    SHIRT DESIGN AND COLOR CASCADING MENU
+************************** */ 
 shirtDesign.addEventListener('change', e => {
     shirtColor.disabled = false;
 
@@ -63,9 +66,9 @@ activities.addEventListener('change', e => {
       
 });
 
-/*
+/* ************
    PAYMENT EVENT LISTENER
-*/ 
+*************************** */ 
 
 payment.addEventListener('change', e => {
     let option = e.target.value;
@@ -90,17 +93,19 @@ payment.addEventListener('change', e => {
 //helper functions
 
 const nameValidator = () =>{
-    const nameValue = document.querySelector('#name').value;
+    const nameValue = nameField.value;
     const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*?  ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
 
+    console.log(`Name validation test on "${nameValue}" evaluates to ${nameIsValid}`);
     return nameIsValid;
 
 }
  
-const emailValidador = () => {
+const emailValidator = () => {
     const emailValue = document.querySelector('#email').value;
     const emailIsValid  = /^[^@]+@[^@]+\.[a-z]+$/i.test(emailValue)
 
+    console.log(`Email validation test on "${emailValue}" evaluates to ${emailIsValid}`);
     return emailIsValid;
 }
 
@@ -109,13 +114,14 @@ const activitiesValidator = () => {
     if(totalCost > 0){
         activitiesIsValid = true
     } 
+    console.log(`Activities validation test evaluates to ${activitiesIsValid}`);
     return activitiesIsValid;
 }
 
 //The "Card number" field must contain a 13 - 16 digit credit card number with no dashes or spaces. The value does not need to be a real credit card number.
-const creditCardValidator = () => {
-    const cardNum = document.querySelector('#cc-num');
-    const cardNumIsValid = /\d{13, 16}/.test(cardNum).value;
+const cardNumValidator = () => {
+    const cardNum = document.querySelector('#cc-num').value;
+    const cardNumIsValid = /\d{13, 16}/.test(cardNum);
 
     return cardNumIsValid;
 }
@@ -138,12 +144,35 @@ const cvvValidator = () => {
 //The "Zip code" field must contain a 5 digit number.
 //The "CVV" field must contain a 3 digit number.
 
+console.log(payment.options[1].value);
 
-
-form.addEventListener('submit', e =>{
+form.addEventListener('submit', e => {
     e.preventDefault();
-    console.log(nameValidator());
-    console.log(emailValidador());
-    console.log(activitiesValidator());
+    if(!nameValidator()) {
+       e.preventDefault();
+      console.log('nameValidator prevented submission');
+    }
+
+    if(!emailValidator()) {
+        e.preventDefault();
+       console.log('emailValidator prevented submission');
+     }
+
+     if(!activitiesValidator()) {
+         e.preventDefault();
+         console.log('activitiesValidator prevented submission');
+     }
+
+     if(payment.options[1].value){
+         if(!cardNumValidator() || !zipCodeValidator() || !cvvValidator()){
+             e.preventDefault();
+             console.log('credit card validator prevented submission');
+         } else{
+             e.preventDefault();
+             console.log("Success!! Everything is OK with the world");
+         }
+     }
+
+
 
 });
