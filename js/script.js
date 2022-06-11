@@ -89,17 +89,20 @@ payment.addEventListener('change', e => {
    FORM VALIDATION
 **************************** */ 
 
-
 //helper functions
 
 const nameValidator = () =>{
     const nameValue = nameField.value;
     const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*?  ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
 
+
+
     console.log(`Name validation test on "${nameValue}" evaluates to ${nameIsValid}`);
     return nameIsValid;
 
 }
+nameValidator();
+
  
 const emailValidator = () => {
     const emailValue = document.querySelector('#email').value;
@@ -118,7 +121,7 @@ const activitiesValidator = () => {
     return activitiesIsValid;
 }
 
-//The "Card number" field must contain a 13 - 16 digit credit card number with no dashes or spaces. The value does not need to be a real credit card number.
+
 const cardNumValidator = () => {
     const cardNum = document.querySelector('#cc-num').value;
     const cardNumIsValid = /\d{13, 16}/.test(cardNum);
@@ -141,15 +144,14 @@ const cvvValidator = () => {
         return cvvIsValid;
     }
 }
-//The "Zip code" field must contain a 5 digit number.
-//The "CVV" field must contain a 3 digit number.
 
-console.log(payment.options[1].value);
 
 form.addEventListener('submit', e => {
     e.preventDefault();
     if(!nameValidator()) {
        e.preventDefault();
+       
+     
       console.log('nameValidator prevented submission');
     }
 
@@ -172,7 +174,44 @@ form.addEventListener('submit', e => {
              console.log("Success!! Everything is OK with the world");
          }
      }
-
-
-
 });
+
+/* *******
+    ACCESIBILITY
+************************** */ 
+const checkboxes = activities.querySelectorAll('[type="checkbox"]');
+console.log(checkboxes[1]);
+
+
+activities.addEventListener('focus', e => {
+    let target = e.target;
+    for(let i=0; i< checkboxes.length; i++){
+        if(target === checkboxes[i]){
+            checkboxes.parentNode.classList.add('focus');         
+        }
+    }  
+})
+
+activities.addEventListener('blur', e => {
+    for(let i=0; i< checkboxes.length; i++){
+        if(target === checkboxes[i]){
+            checkboxes.parentNode.classList.remove('focus');         
+        }   
+    }
+});
+
+
+function showOrHideHint (element, validator){
+    //show element when show is true, hide when false
+    if(!validator){
+        element.parentElement.classList.add('not-valid');
+        element.parentElement.classList.remove('valid');
+        element.parentElement.lastElementChild.style.display = 'inline';
+    }
+        element.parentElement.classList.add('valid');
+        element.parentElement.classList.remove('not-valid');
+        element.parentElement.lastElementChild.style.display = 'none';
+}
+
+showOrHideHint(nameField, nameValidator());
+console.log(nameField.parentElement);
