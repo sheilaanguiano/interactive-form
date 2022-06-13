@@ -1,4 +1,5 @@
-# Treehouse FSJS Techdegree
+# Interactive Form
+## Treehouse Techdegree Project 3
 A dummy interactive form with validation and accesibility feature that wraps the knowledge acquiered during Unit 3 of Threehouse's Techdegree.
 
 
