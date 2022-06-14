@@ -199,44 +199,45 @@ const creditCardValidator = () => {
 if the option is credit card validates that the information is accurate calling the
 Credit card validator
 */
+
 const paymentValidator = () => {
-    /*
-    if (payment.options[1].value) 
-        if (creditCardValidator) true
-        else false
-    else true
-    */
-    return (payment.options[1].value && creditCardValidator()) || true
+    
+    return payment.options[1].value && creditCardValidator() || true
 }
 /* ***********************
     FORM VALIDATOR
 ***************************************** */ 
 
-
+console.log(payment.options[1]);
 form.addEventListener('submit', e => {
-    const validationFunctions = [nameValidator, emailValidator, activitiesValidator, paymentValidator]
-   
-    //Variable to store the validation function results
-    let validationResults = []
-    //Calls each function
-    validationFunctions.forEach(fun => {
-        validationResults.push(fun());
-    })  
-
-    //Evaluates if it the form should submit or show the missing information
-    let submitted = true;
-    validationResults.forEach( res => {
-        if (!res) {
-            submitted = false;
-        }
-    })
-   
-    e.preventDefault();
-    /*Since the form is not connected to a database, I'm using a .reload() to mimic
-    the successful submit behavior
-    */
-    if (submitted) { 
-        console.log("submitted")
-        location.reload();
+    if(!nameValidator()){
+        e.preventDefault();     
+    }
+    if(!emailValidator()){
+        e.preventDefault();
+    }
+    if(!activitiesValidator()){
+        e.preventDefault();
+    }
+    if(payment.options[1]){
+        if(!creditCardValidator()){
+            e.preventDefault();
+        }  
     }
 });
+// const validationFunctions = [nameValidator, emailValidator, activitiesValidator, paymentValidator]
+    // //Variable to store the validation function results
+    // let validationResults = []
+    
+    // //Calls each function
+    // validationFunctions.forEach(fun => {
+    //     validationResults.push(fun());
+    // })  
+
+    // //Evaluates if it the form should submit or show the missing information
+    // let submitted = true;
+    // validationResults.forEach( res => {
+    //     if (!res) {
+    //         submitted = false;
+    //     }
+    // })
