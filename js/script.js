@@ -55,19 +55,25 @@ shirtDesign.addEventListener('change', e => {
      * Event reporting that the user made a selection on the
      * Design dropdown menu, thus can pick and option from the
      * filtered color menu (Shirtcolor.lenght);
-     */
-
+     */    
     shirtColor.disabled = false;
-
+ 
+  
     for(let i = 0; i < shirtColor.length; i++){
         if(e.target.value !== shirtColor.children[i].getAttribute('data-theme')){
-            shirtColor.selectedIndex = '-1';
-            shirtColor.children[i].style.display = 'none';
+            // shirtColor.children[0].textContent = `Pick a Color`;
+            // shirtColor.selectedIndex = '-1';
+            shirtColor.children[i].hidden = true;
+            shirtColor.children[i].removeAttribute('selected');
+           
         } else {
-            shirtColor.children[i].style.display = 'initial'
+            shirtColor.children[i].hidden = false;
+            shirtColor.children[i].setAttribute('selected', true);
         } 
     }
 });
+
+console.log(checkboxes[1].getAttribute('data-day-and-time'));
 
 /* ************************
     ACTIVITIES EVENT LISTENERS + ACCESIBILITY EVENT LISTENERS
@@ -84,9 +90,9 @@ activities.addEventListener('change', e => {
                                 :  totalCost - eventCost;
     activitiesCost.innerHTML= `Total $${totalCost}`;
 
-    // let addedToCalendar = clicked. checked.getAttribute('data-day-and-time');
-    // for(let i = 0; i < checkboxes.length; i++ ){
-    //     if()
+    
+    // for(let i = 0; i< checkboxes.length; i++){
+    //     if(clicked.getAttribute('data-day-and-time') && )
     // }
       
 });
@@ -149,8 +155,8 @@ function hideHint(element){
 
 
 //Individual validator function with accesibility feature to show or hide hints
-const nameValidator = () =>{
-    const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*?  ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameField.value);
+const nameValidator = () => {
+    const nameIsValid = nameField.value.trim().length > 0
     
     nameIsValid ? hideHint(nameField) : showHint(nameField);
     
@@ -175,49 +181,62 @@ const activitiesValidator = () => {
     return activitiesIsValid;
 }
 
-
+// Validates the credit card information
 const creditCardValidator = () => {
-    const cardNumIsValid = /\d{13,16}/.test(cardNum.value);
-    const zipCodeIsValid = /\d{5}/.test(zipCode.value)
-    const cvvIsValid = /\d{3}/.test(cvv.value);
+    const cardNumIsValid = /^\d{13,16}$/.test(cardNum.value);
+    const zipCodeIsValid = /^\d{5}$/.test(zipCode.value)
+    const cvvIsValid = /^\d{3}$/.test(cvv.value);
 
+ 
     cardNumIsValid ? hideHint(cardNum) : showHint(cardNum);
     zipCodeIsValid ? hideHint(zipCode) : showHint(zipCode);
     cvvIsValid     ? hideHint(cvv)     : showHint(cvv);
 
-    if( cardNumIsValid && zipCodeIsValid && cvvIsValid ){
-        return console.log(`credit card pass`);
-    } else {
-        return console.log(`credit card validation fail`);
-    }
-
+    return cardNumIsValid && zipCodeIsValid && cvvIsValid;
 }
 
+/*Validates to True if the payment is Paypal or Bitcoin OR
+if the option is credit card validates that the information is accurate calling the
+Credit card validator
+*/
+const paymentValidator = () => {
+    /*
+    if (payment.options[1].value) 
+        if (creditCardValidator) true
+        else false
+    else true
+    */
+    return (payment.options[1].value && creditCardValidator()) || true
+}
 /* ***********************
     FORM VALIDATOR
 ***************************************** */ 
 
+
 form.addEventListener('submit', e => {
-    
-    if(!nameValidator()) {  
-       e.preventDefault();
-       console.log(`Name validator prevented submission`);
-    }
+    const validationFunctions = [nameValidator, emailValidator, activitiesValidator, paymentValidator]
+   
+    //Variable to store the validation function results
+    let validationResults = []
+    //Calls each function
+    validationFunctions.forEach(fun => {
+        validationResults.push(fun());
+    })  
 
-    if(!emailValidator()) {
-        e.preventDefault();
-        console.log(`Email Validator prevented submission`);
+    //Evaluates if it the form should submit or show the missing information
+    let submitted = true;
+    validationResults.forEach( res => {
+        if (!res) {
+            submitted = false;
+        }
+    })
+   
+    e.preventDefault();
+    /*Since the form is not connected to a database, I'm using a .reload() to mimic
+    the successful submit behavior
+    */
+    if (submitted) { 
+        console.log("submitted")
+        location.reload();
     }
-
-     if(!activitiesValidator()) {
-         e.preventDefault();
-         console.log('Activities validator prevented submission');
-     }
-
-     if(payment.options[1].value){
-        if(!creditCardValidator()){
-            e.preventDefault();
-       }
-    }
- 
 });
