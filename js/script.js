@@ -200,15 +200,15 @@ if the option is credit card validates that the information is accurate calling 
 Credit card validator
 */
 
-const paymentValidator = () => {
+// const paymentValidator = () => {
     
-    return payment.options[1].value && creditCardValidator() || true
-}
+//     return payment.options[1].value && creditCardValidator() || true
+// }
 /* ***********************
     FORM VALIDATOR
 ***************************************** */ 
 
-console.log(payment.options[1]);
+console.log(payment.value);
 form.addEventListener('submit', e => {
     if(!nameValidator()){
         e.preventDefault();     
@@ -216,28 +216,13 @@ form.addEventListener('submit', e => {
     if(!emailValidator()){
         e.preventDefault();
     }
+    
     if(!activitiesValidator()){
         e.preventDefault();
     }
-    if(payment.options[1]){
+    if(payment.value === 'credit-card'){
         if(!creditCardValidator()){
             e.preventDefault();
         }  
     }
 });
-// const validationFunctions = [nameValidator, emailValidator, activitiesValidator, paymentValidator]
-    // //Variable to store the validation function results
-    // let validationResults = []
-    
-    // //Calls each function
-    // validationFunctions.forEach(fun => {
-    //     validationResults.push(fun());
-    // })  
-
-    // //Evaluates if it the form should submit or show the missing information
-    // let submitted = true;
-    // validationResults.forEach( res => {
-    //     if (!res) {
-    //         submitted = false;
-    //     }
-    // })
