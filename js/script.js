@@ -61,8 +61,7 @@ shirtDesign.addEventListener('change', e => {
   
     for(let i = 0; i < shirtColor.length; i++){
         if(e.target.value !== shirtColor.children[i].getAttribute('data-theme')){
-            // shirtColor.children[0].textContent = `Pick a Color`;
-            // shirtColor.selectedIndex = '-1';
+           
             shirtColor.children[i].hidden = true;
             shirtColor.children[i].removeAttribute('selected');
            
@@ -73,7 +72,7 @@ shirtDesign.addEventListener('change', e => {
     }
 });
 
-console.log(checkboxes[1].getAttribute('data-day-and-time'));
+
 
 /* ************************
     ACTIVITIES EVENT LISTENERS + ACCESIBILITY EVENT LISTENERS
@@ -90,19 +89,14 @@ activities.addEventListener('change', e => {
                                 :  totalCost - eventCost;
     activitiesCost.innerHTML= `Total $${totalCost}`;
 
-    
-    // for(let i = 0; i< checkboxes.length; i++){
-    //     if(clicked.getAttribute('data-day-and-time') && )
-    // }
-      
 });
 
 
 //Activities accesibility listener
 activities.addEventListener('focusin', e => {
     /**
-     * This event listener uses focusin instead of focus, because
-     * the it bubbles, which is nedded since the event listene is usend activities which is the parentNode of all the checkboxes
+     * This event listener uses focusin instead of focus, to take
+     * advantage of bubbling
      * 
      * Use tab to go DOWN the activities list and space bar to check which to attend
      * Use tab + shift go UP the list
@@ -123,6 +117,9 @@ activities.addEventListener('focusin', e => {
 
 payment.addEventListener('change', e => {
     let option = e.target.value;
+    /*payment divs are stored in global variables
+    *and having them in an array make them easier to iterate
+    */
     let paymentOptions = [creditCard, paypal, bitcoin];
     
 
@@ -194,6 +191,7 @@ const creditCardValidator = () => {
 
     return cardNumIsValid && zipCodeIsValid && cvvIsValid;
 }
+
 
 /* ***********************
     FORM VALIDATOR
